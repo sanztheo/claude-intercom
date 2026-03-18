@@ -79,9 +79,18 @@ function getAncestorPids(pid: number, maxDepth: number = 4): number[] {
 }
 
 export function detectProject(): string {
-  const cwd = process.cwd();
-  const parts = cwd.split("/").filter(Boolean);
-  return parts[parts.length - 1] ?? cwd;
+  try {
+    const gitRoot = execFileSync("git", ["rev-parse", "--show-toplevel"], {
+      encoding: "utf-8",
+      cwd: process.cwd(),
+    }).trim();
+    const parts = gitRoot.split("/").filter(Boolean);
+    return parts[parts.length - 1] ?? gitRoot;
+  } catch {
+    // Not a git repo — fall back to cwd
+    const parts = process.cwd().split("/").filter(Boolean);
+    return parts[parts.length - 1] ?? process.cwd();
+  }
 }
 
 // --- Session management (links PID ancestor chain → agent code) ---
