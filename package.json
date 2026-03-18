@@ -1,0 +1,12 @@
+{
+  "name": "mcp-intercom",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "bun src/server.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "zod": "^3.24.0"
+  }
+}
